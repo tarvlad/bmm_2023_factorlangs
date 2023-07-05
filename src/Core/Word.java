@@ -29,7 +29,7 @@ public class Word implements Comparable<Word> {
      */
     public Word(Word word) {
         elements = new Letter[word.elements.length];
-        //Force copy because array elements is mutable, and we expect {@code new} word.
+        //Force copy because array elements is mutable, and we expect new word.
         System.arraycopy(word.elements, 0, elements, 0, elements.length);
     }
 
@@ -88,7 +88,7 @@ public class Word implements Comparable<Word> {
 
     private boolean match(Word pattern, int beginIdx) {
         for (var i = 0; i < pattern.size(); i++) {
-            if (elements[beginIdx + i] != pattern.elements[i]) {
+            if (elements[beginIdx + i].compareTo(pattern.elements[i]) != 0) {
                 return false;
             }
         }
@@ -136,5 +136,14 @@ public class Word implements Comparable<Word> {
         }
 
         return true;
+    }
+
+    public int[] intArrayRepresentation() {
+        var ret = new int[elements.length];
+        for (var i = 0; i < elements.length; i++) {
+            ret[i] = elements[i].value;
+        }
+
+        return ret;
     }
 }

@@ -5,7 +5,7 @@ package Core;
  * Set of letters is a totally ordered set.
  */
 public class Letter implements Comparable<Letter> {
-    private final int value;
+    protected final int value;
 
 
     /**
