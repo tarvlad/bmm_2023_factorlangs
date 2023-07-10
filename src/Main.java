@@ -101,8 +101,11 @@ public class Main {
         var morphismDegree = reader.nextInt();
 
         mainWord = morphism.apply(mainWord, morphismDegree);
-        System.out.println("Main word after morphism phi^" + String.valueOf(morphismDegree) + " apply: ");
-        System.out.println(Arrays.toString(mainWord.intArrayRepresentation()));
+        System.out.print("View main word after morphism apply?\n0 - no, 1 - yes: ");
+        if (reader.nextInt() == 1) {
+            System.out.println("Main word after morphism phi^" + String.valueOf(morphismDegree) + " apply: ");
+            System.out.println(Arrays.toString(mainWord.intArrayRepresentation()));
+        }
 
         System.out.print("Max len of sub-words: ");
         var maxSubWordLen = reader.nextInt();
