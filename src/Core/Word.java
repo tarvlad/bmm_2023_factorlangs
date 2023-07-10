@@ -1,5 +1,6 @@
 package Core;
 
+import java.util.ArrayList;
 import java.util.Stack;
 
 /**
@@ -81,6 +82,8 @@ public class Word implements Comparable<Word> {
 
         if (elements.length < o.elements.length) {
             return -10;
+        } else if (elements.length > o.elements.length) {
+            return 10;
         }
 
         return 0;
@@ -121,27 +124,85 @@ public class Word implements Comparable<Word> {
      * Checks whether the word is bispecial in mainWord with given alphabet
      */
     public boolean isBispecial(Word mainWord, Letter[] alphabet) {
-        for (var letterBegin: alphabet) {
-            for (var letterEnd: alphabet) {
-                var checkWordLetters = new Letter[elements.length + 2];
-                checkWordLetters[0] = letterBegin;
-                System.arraycopy(elements, 0, checkWordLetters, 1, elements.length);
-                checkWordLetters[checkWordLetters.length - 1] = letterEnd;
+        //search in begin and end
+        var numContinueLeft = 0;
+        var numContinueRight = 0;
 
-                var checkWord = new Word(checkWordLetters);
-                if (mainWord.occurrences(checkWord).length == 0) {
-                    return false;
-                }
+        for (var letterBegin : alphabet) {
+            var checkWordLetters = new Letter[elements.length + 1];
+            checkWordLetters[0] = letterBegin;
+            System.arraycopy(elements, 0, checkWordLetters, 1, elements.length);
+
+            var checkWord = new Word(checkWordLetters);
+            if (mainWord.occurrences(checkWord).length != 0) {
+                numContinueLeft++;
             }
         }
 
-        return true;
+        for (var letterEnd : alphabet) {
+            var checkWordLetters = new Letter[elements.length + 1];
+            System.arraycopy(elements, 0, checkWordLetters, 0, elements.length);
+            checkWordLetters[checkWordLetters.length - 1] = letterEnd;
+
+            var checkWord = new Word(checkWordLetters);
+            if (mainWord.occurrences(checkWord).length != 0) {
+                numContinueRight++;
+            }
+        }
+
+        return numContinueLeft >= 2 && numContinueRight >= 2;
     }
 
+    /**
+     * @return returns {@code int array} representation of {@code this} word
+     */
     public int[] intArrayRepresentation() {
         var ret = new int[elements.length];
         for (var i = 0; i < elements.length; i++) {
             ret[i] = elements[i].value;
+        }
+
+        return ret;
+    }
+
+
+    /**
+     * @return all sub-words of {@code this} which {@code len <= maxSubWordLen}
+     */
+    public Word[] subWords(int maxSubWordLen) {
+        //number of all sub-words is \frac{n(n - 1)}{2}
+        //number of all sub-words, which len <= k is \sum_{i = 0}^{k - 1}[n - i]
+        var lenRet = maxSubWordLen * size() + maxSubWordLen / 2 - maxSubWordLen * maxSubWordLen / 2;
+        var ret = new Word[lenRet];
+
+        var retIdx = 0;
+        for (var len = 1; len <= maxSubWordLen; len++) {
+            for (var idxBegin = 0; idxBegin <= elements.length - len; idxBegin++) {
+                var retILetters = new Letter[len];
+                System.arraycopy(elements, idxBegin, retILetters, 0, retILetters.length);
+
+                ret[retIdx++] = new Word(retILetters);
+            }
+        }
+
+        return ret;
+    }
+
+    /**
+     * @return all sub-words of {@code this} which is bispecial in {@code this}
+     */
+    public Word[] allBispecialWords(Word[] subWords, Letter[] alphabet) {
+        var bispecialWords = new ArrayList<Word>();
+
+        for (var word : subWords) {
+            if (word.isBispecial(this, alphabet)) {
+                bispecialWords.add(word);
+            }
+        }
+
+        var ret = new Word[bispecialWords.size()];
+        for (var i = 0; i < bispecialWords.size(); i++) {
+            ret[i] = bispecialWords.get(i);
         }
 
         return ret;

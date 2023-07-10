@@ -14,6 +14,9 @@ public class PhiFunction {
         map = image;
     }
 
+    /**
+     * @return {@code phi(word)}
+     */
     public Word apply(Word word) {
         var ret = new Word[word.size()];
 
@@ -24,6 +27,9 @@ public class PhiFunction {
         return new Word(ret);
     }
 
+    /**
+     * @return {@code phi^{times}(word)}
+     */
     public Word apply(Word word, int times) {
         if (times == 0) {
             return new Word(word);
