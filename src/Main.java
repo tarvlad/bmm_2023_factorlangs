@@ -66,10 +66,10 @@ public class Main {
         var phiImage = new Word[alphabetLength];
 
         for (var i = 0; i < phiImage.length; i++) {
-            System.out.print("    Input length of " + String.valueOf(i) + " image: ");
+            System.out.print("    Input length of " + i + " image: ");
             var wordLen = reader.nextInt();
 
-            System.out.print("    " + String.valueOf(i) + " -> ");
+            System.out.print("    " + i + " -> ");
             var word = readWord(reader, wordLen);
             phiImage[i] = word;
         }
@@ -89,7 +89,7 @@ public class Main {
         for (var i = 0; i < alphabet.length; i++) {
             alphabet[i] = new Letter(i);
         }
-        System.out.println("Alphabet init success. Letters [0.." + String.valueOf(numLettersInAlphabet - 1) + "]");
+        System.out.println("Alphabet init success. Letters [0.." + (numLettersInAlphabet - 1) + "]");
 
         var mainWord = readMainWord(reader);
         System.out.println("Main word read successfully");
@@ -103,14 +103,14 @@ public class Main {
         mainWord = morphism.apply(mainWord, morphismDegree);
         System.out.print("View main word after morphism apply?\n0 - no, 1 - yes: ");
         if (reader.nextInt() == 1) {
-            System.out.println("Main word after morphism phi^" + String.valueOf(morphismDegree) + " apply: ");
+            System.out.println("Main word after morphism phi^" + morphismDegree + " apply: ");
             System.out.println(Arrays.toString(mainWord.intArrayRepresentation()));
         }
 
         System.out.print("Max len of sub-words: ");
         var maxSubWordLen = reader.nextInt();
 
-        System.out.println("Calculating all sub-words with len <= " + String.valueOf(maxSubWordLen) + "...");
+        System.out.println("Calculating all sub-words with len <= " + maxSubWordLen + "...");
         var subWords = uniqueWords(mainWord.subWords(maxSubWordLen));
 
         System.out.print("Input 0 if you want all sub-words of given word, 1 if all bispecial: ");
@@ -121,7 +121,7 @@ public class Main {
 
             case 1 -> {
                 System.out.println("Calculating all bispecial sub-words with len <= " +
-                        String.valueOf(maxSubWordLen) + "..."
+                        maxSubWordLen + "..."
                 );
 
                 var bispecialWords = mainWord.allBispecialWords(subWords, alphabet);
