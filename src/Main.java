@@ -1,3 +1,4 @@
+import Core.BispecialGraph;
 import Core.Letter;
 import Core.PhiFunction;
 import Core.Word;
@@ -126,9 +127,20 @@ public class Main {
 
                 var bispecialWords = mainWord.allBispecialWords(subWords, alphabet);
                 printWordsArray(bispecialWords);
+
+                System.out.println("View bispeciality graphs of founded words?\n0 - no, 1 - yes");
+                if (reader.nextInt() == 1) {
+                    for (var word: bispecialWords) {
+                        var graph = new BispecialGraph(mainWord, alphabet, word);
+                        System.out.println(Arrays.toString(word.intArrayRepresentation()) + ": ");
+                        System.out.println(graph.listView());
+                        System.out.println();
+                    }
+                }
             }
 
             default -> System.out.println("Unexpected command");
         }
+
     }
 }
