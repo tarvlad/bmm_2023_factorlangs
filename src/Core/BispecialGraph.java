@@ -1,7 +1,5 @@
 package Core;
 
-import java.util.Arrays;
-
 public class BispecialGraph {
     private final int[][] elements;
 

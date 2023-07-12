@@ -114,18 +114,21 @@ public class Main {
         System.out.println("Calculating all sub-words with len <= " + maxSubWordLen + "...");
         var subWords = uniqueWords(mainWord.subWords(maxSubWordLen));
 
-        System.out.print("Input 0 if you want all sub-words of given word, 1 if all bispecial: ");
+        System.out.print("Input 0 if you want all sub-words of given word, 1 if all bispecial irreducible: ");
         var command = reader.nextInt();
 
         switch (command) {
             case 0 -> printWordsArray(subWords);
 
             case 1 -> {
-                System.out.println("Calculating all bispecial sub-words with len <= " +
+                System.out.println("Calculating all bispecial irreducible sub-words with len <= " +
                         maxSubWordLen + "..."
                 );
 
-                var bispecialWords = mainWord.allBispecialWords(subWords, alphabet);
+                var bispecialWords = Word.filterReducibleBispecialWords(
+                        mainWord.allBispecialSubWords(subWords, alphabet),
+                        morphism
+                );
                 printWordsArray(bispecialWords);
 
                 System.out.println("View bispeciality graphs of founded words?\n0 - no, 1 - yes");

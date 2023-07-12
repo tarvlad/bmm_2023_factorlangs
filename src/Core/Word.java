@@ -189,9 +189,60 @@ public class Word implements Comparable<Word> {
     }
 
     /**
+     * Checks that {@code word} is irreducible in {@code words}
+     */
+    private static boolean isIrreducible(Word word, Word[] words, PhiFunction phi) {
+        // length phi(word) >= length word
+        var checkWords = new ArrayList<Word>();
+        for (var checkWord : words) {
+            if (checkWord.size() >= word.size()) {
+                break;
+            }
+            checkWords.add(checkWord);
+        }
+
+        for (var checkWord : checkWords) {
+            var phiPower = 1;
+            while (true /*forall k : phi^k (checkWord) .size < word.size */) {
+                var phiCheckWord = phi.apply(checkWord, phiPower);
+                if (phiCheckWord.size() > word.size()) {
+                    break;
+                } else if (phiCheckWord.size() == word.size()) {
+                    if (word.compareTo(phiCheckWord) == 0) {
+                        return false;
+                    }
+                }
+
+                phiPower++;
+            }
+
+
+        }
+
+        return true;
+    }
+
+    public static Word[] filterReducibleBispecialWords(Word[] bispecialWords, PhiFunction phi) {
+        var ret = new ArrayList<Word>();
+
+        for (var word : bispecialWords) {
+            if (isIrreducible(word, bispecialWords, phi)) {
+                ret.add(word);
+            }
+        }
+
+        var retArr = new Word[ret.size()];
+        for (var i = 0; i < retArr.length; i++) {
+            retArr[i] = ret.get(i);
+        }
+
+        return retArr;
+    }
+
+    /**
      * @return all sub-words of {@code this} which is bispecial in {@code this}
      */
-    public Word[] allBispecialWords(Word[] subWords, Letter[] alphabet) {
+    public Word[] allBispecialSubWords(Word[] subWords, Letter[] alphabet) {
         var bispecialWords = new ArrayList<Word>();
 
         for (var word : subWords) {
@@ -200,6 +251,7 @@ public class Word implements Comparable<Word> {
             }
         }
 
+        //it's cheap because it's all only references
         var ret = new Word[bispecialWords.size()];
         for (var i = 0; i < bispecialWords.size(); i++) {
             ret[i] = bispecialWords.get(i);
