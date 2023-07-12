@@ -19,7 +19,6 @@ public class BispecialGraph {
                 var checkWord = new Word(checkWordElements);
                 if (mainWord.occurrences(checkWord).length != 0) {
                     elements[letterBeginIdx][letterEndIdx] = ENABLED;
-                    elements[letterEndIdx][letterBeginIdx] = ENABLED;
                 }
             }
         }
